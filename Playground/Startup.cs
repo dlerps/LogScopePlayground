@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Playground.ErrorHandling;
+using Playground.ExtendedScope;
 
 namespace Playground
 {
@@ -19,6 +20,9 @@ namespace Playground
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(opt => opt.Filters.Add<ErrorFilter>());
+
+            services.AddScoped<ExtendedLoggingScopeManager>()
+                .AddScoped<ExtendedLoggingScope>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
