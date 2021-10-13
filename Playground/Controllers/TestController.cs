@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +21,10 @@ namespace Playground.Controllers
         {
             using var ls = _logger.BeginScope("{SCOPE}", "777777777777777777777777");
             _logger.LogInformation("{Input}", input);
+
+            if (input == "abc")
+                throw new InvalidOperationException("It's a trap!!");
+            
             return Task.FromResult(NoContent());
         }
     }
