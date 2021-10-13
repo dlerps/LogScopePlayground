@@ -20,6 +20,9 @@ namespace Playground.ErrorHandling
         {
             if (context?.Exception == null)
                 return;
+
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
+            _logger.BeginScope(_loggingScopeManager.ScopeTemplate, _loggingScopeManager.ScopeParams);
             
             _logger.LogError(context.Exception, "Something went terribly wrong....");
             context.ExceptionHandled = true;

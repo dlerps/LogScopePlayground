@@ -17,7 +17,8 @@ namespace Playground.ExtendedScope
         public void Begin(string message, params object[] properties)
         {
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-            _manager.Scope = _logger.BeginScope(message, properties);
+            var scope = _logger.BeginScope(message, properties);
+            _manager.SetScope(scope, message, properties);
         }
     }
 }
