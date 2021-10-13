@@ -25,11 +25,18 @@ namespace Playground.Controllers
         {
             _scope.Begin("{SCOPE}", "777777777777777777777777");
             _logger.LogInformation("{Input}", input);
+            
+            Inner();
 
             if (input == "abc")
                 throw new InvalidOperationException("It's a trap!!");
             
             return Task.FromResult(NoContent());
+        }
+
+        private void Inner()
+        {
+            _scope.Begin("{Inner}", 123);
         }
     }
 }
