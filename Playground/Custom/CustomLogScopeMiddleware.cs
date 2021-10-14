@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Serilog;
+using Serilog.Context;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 
@@ -18,12 +19,7 @@ namespace Playground.Custom
         public async Task Invoke(HttpContext httpContext, CustomScopeEnricher customScopeEnricher)
         {
             // before
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .Enrich.With(customScopeEnricher)
-                .WriteTo.Console(new RenderedCompactJsonFormatter())
-                .CreateLogger();
+            using var scopeEnricher = LogContext.Push(customScopeEnricher);
 
             await _next(httpContext);
             
