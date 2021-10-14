@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Playground.Custom;
 
 namespace Playground.Controllers
 {
@@ -11,15 +12,18 @@ namespace Playground.Controllers
     {
         private readonly ILogger<TestController> _logger;
 
-        public TestController(ILogger<TestController> logger)
+        private readonly CustomLogScope _customLogScope;
+
+        public TestController(ILogger<TestController> logger, CustomLogScope customLogScope)
         {
             _logger = logger;
+            _customLogScope = customLogScope;
         }
 
         [HttpGet("{input:alpha}")]
         public Task Get([FromRoute] string input)
         {
-            using var ls = _logger.BeginScope("{SCOPE}", "777777777777777777777777");
+            _customLogScope.With("SCOPE", "777777777777777777777777");
             _logger.LogInformation("{Input}", input);
 
             if (input == "abc")

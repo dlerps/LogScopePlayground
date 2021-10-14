@@ -1,6 +1,8 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Playground.Custom;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
@@ -11,19 +13,9 @@ namespace Playground
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .CreateLogger();
-            
             try
             {
                 CreateHostBuilder(args).Build().Run();
-            }
-            catch (Exception e)
-            {
-                Log.Logger.Fatal(e, "Error");
             }
             finally
             {
@@ -39,6 +31,7 @@ namespace Playground
                     .ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(services)
                     .Enrich.FromLogContext()
+                    //.Enrich.With(services.GetService<CustomScopeEnricher>())
                     .WriteTo.Console(new RenderedCompactJsonFormatter()))
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
