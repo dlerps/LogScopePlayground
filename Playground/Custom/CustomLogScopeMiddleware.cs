@@ -1,9 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Serilog;
 using Serilog.Context;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
 
 namespace Playground.Custom
 {
